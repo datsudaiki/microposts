@@ -20,16 +20,7 @@ class UsersController extends Controller
     
         
     }
-     public function show($id)
-    {
-        // idの値でユーザを検索して取得
-        $user = User::findOrFail($id);
-
-        // ユーザ詳細ビューでそれを表示
-        return view('users.show', [
-            'user' => $user,
-        ]);
-    }
+    
     
      public function show($id)
     {
@@ -49,13 +40,7 @@ class UsersController extends Controller
         ]);
     }
     
-    /**
-     * ユーザのフォロー一覧ページを表示するアクション。
-     *
-     * @param  $id  ユーザのid
-     * @return \Illuminate\Http\Response
-     */
-    public function followings($id)
+   public function followings($id)
     {
         // idの値でユーザを検索して取得
         $user = User::findOrFail($id);
@@ -96,5 +81,17 @@ class UsersController extends Controller
             'users' => $followers,
         ]);
     }
+    
+     public function favorites($id)
+    {
+        $user = User::findOrFail($id);
+        $user->loadRelationshipCounts();
+        $favorites = $user->favorites()->paginate(10);
+
+        return view('users.favorites', [
+            'user' => $user,
+            'microposts' => $favorites,
+        ]);
+    }
 }
-}
+

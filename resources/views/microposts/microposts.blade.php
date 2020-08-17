@@ -14,6 +14,19 @@
                         {{-- 投稿内容 --}}
                         <p class="mb-0">{!! nl2br(e($micropost->content)) !!}</p>
                     </div>
+                     <div>
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                @if (Auth::user()->is_favorite($micropost->id))
+                                    {!! Form::open(['route' => ['favorites.unfavorite', $micropost->id], 'method' => 'delete']) !!}
+                                        {!! Form::submit('UnFavorites', ['class' => 'btn btn-sm btn-success']) !!}
+                                    {!! Form::close() !!}
+                                @else
+                                    {!! Form::open(['route' => ['favorites.favorite', $micropost->id]]) !!}
+                                        {!! Form::submit('Favorites', ['class' => 'btn btn-sm btn-light']) !!}
+                                    {!! Form::close() !!}
+                                @endif
+                            </li>
                     <div>
                         @if (Auth::id() == $micropost->user_id)
                             {{-- 投稿削除ボタンのフォーム --}}
